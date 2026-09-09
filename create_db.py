@@ -1,3 +1,4 @@
+#בס"ד
 import enum
 import uuid
 from datetime import datetime
@@ -112,3 +113,4 @@ if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
     
     print("הצלחה! נוצר קובץ חדש בשם forced.db המכיל את כל טבלאות ה-MVP המעודכנות")
+#שכוייח גדול לך ולבינה המלאכותית שלך!
