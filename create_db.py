@@ -97,7 +97,6 @@ class ForcedFavoriteProvider(Base):
     provider_id = Column(String, ForeignKey("providers.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
-#גררררר
 # ========================================================
 # 🔥 יצירת קובץ בסיס הנתונים המקומי forced.db בפועל 🔥
 # ========================================================
