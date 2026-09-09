@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker, Session
 # מייבאים את ה-engine ואת המודל שכתבת בקוד הקודם
-from your_models_file import engine, GuestClient 
+from create_db import engine, GuestClient 
 
 # 1. יצירת חיבור (Session) לבסיס הנתונים
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
