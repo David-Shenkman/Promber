@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker, Session
 # מייבאים את ה-engine ואת המודל שכתבת בקוד הקודם
 from create_db import engine, GuestClient , RegularClient
-
+#
 # 1. יצירת חיבור (Session) לבסיס הנתונים
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
