@@ -3,8 +3,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import sessionmaker, Session
 # מייבאים את ה-engine ואת המודל שכתבת בקוד הקודם
-from create_db import engine, GuestClient , RegularClient
-#
+from create_db import engine, GuestClient, RegularClient, Provider
+
 # 1. יצירת חיבור (Session) לבסיס הנתונים
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -35,6 +35,15 @@ class RegularCreateSchema(BaseModel):
 
     class Config:
         from_attributes = True
+# 5. הגדרת "סכימה" של Pydantic - זה מגדיר איזה מידע ה-API מצפה לקבל מהמשתמש
+class ProviderCreateSchema(BaseModel):
+    phone: str
+    first_name: str
+    last_name: str
+
+    class Config:
+        from_attributes = True
+
 
 # ========================================================
 # 🔥 נקודות הקצה של ה-API (Endpoints) 🔥
@@ -81,17 +90,22 @@ def get_all_regulars(db: Session = Depends(get_db)):
     regulars = db.query(RegularClient).all()
     return regulars
 
-# בקשת POST: יצירת לקוח קבוע חדש במערכת
-@app.post("/regulars/", response_model=RegularCreateSchema)
-def create_regular(regular_data: RegularCreateSchema, db: Session = Depends(get_db)):
+# בקשת POST: יצירת בעל מקצוע חדש במערכת
+@app.post("/providers/", response_model=ProviderCreateSchema)
+def create_provider(provider_data: ProviderCreateSchema, db: Session = Depends(get_db)):
     # יצירת אובייקט חדש לפי המודל של SQLAlchemy
-    new_regular = RegularClient(
-        phone=regular_data.phone,
-        first_name=regular_data.first_name,
-        last_name=regular_data.last_name
+    new_provider = Provider(
+        phone=provider_data.phone,
+        first_name=provider_data.first_name,
+        last_name=provider_data.last_name
     )
     # שמירה בבסיס הנתונים
-    db.add(new_regular)
+    db.add(new_provider)
     db.commit()
-    db.refresh(new_regular)
-    return new_regular
+    db.refresh(new_provider)
+    return new_provider
+# בקשת GET: שליפת כל בעלי המקצוע הקיימים במערכת
+@app.get("/providers/")
+def get_all_providers(db: Session = Depends(get_db)):
+    providers = db.query(Provider).all()
+    return providers
