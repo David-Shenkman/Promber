@@ -51,7 +51,24 @@ class GuestClient(Base):
     # קשר לפייתון: גישה קלה לכל ההזמנות שפתח האורח הזה
     bookings = relationship("Booking", back_populates="guest_client")
 
-# 5. טבלת ניהול ההזמנות
+# 5. טבלת לקוחות קבועים
+class RegularClient(Base):
+    __tablename__ = "regular_clients"
+    
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    phone = Column(String, nullable=False)
+    
+    # הוספת שם פרטי ושם משפחה 
+    first_name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # קשר לפייתון: גישה קלה לכל ההזמנות שפתח הלקוח הזה
+    bookings = relationship("Booking", back_populates="regular_client")
+
+
+# 6. טבלת ניהול ההזמנות
 class Booking(Base):
     __tablename__ = "bookings"
     
@@ -73,7 +90,7 @@ class Booking(Base):
     provider = relationship("Provider", back_populates="bookings")
     messages = relationship("ChatMessage", back_populates="booking")
 
-# 6. טבלת הודעות צ'אט מוגנות
+# 7. טבלת הודעות צ'אט מוגנות
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
     
