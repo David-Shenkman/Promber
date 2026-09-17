@@ -80,3 +80,18 @@ def create_regular(regular_data: RegularCreateSchema, db: Session = Depends(get_
 def get_all_regulars(db: Session = Depends(get_db)):
     regulars = db.query(RegularClient).all()
     return regulars
+
+# בקשת POST: יצירת לקוח קבוע חדש במערכת
+@app.post("/regulars/", response_model=RegularCreateSchema)
+def create_regular(regular_data: RegularCreateSchema, db: Session = Depends(get_db)):
+    # יצירת אובייקט חדש לפי המודל של SQLAlchemy
+    new_regular = RegularClient(
+        phone=regular_data.phone,
+        first_name=regular_data.first_name,
+        last_name=regular_data.last_name
+    )
+    # שמירה בבסיס הנתונים
+    db.add(new_regular)
+    db.commit()
+    db.refresh(new_regular)
+    return new_regular
