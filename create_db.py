@@ -75,7 +75,8 @@ class Booking(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     
     # מפתחות זרים - החיבור הפיזי ב-DB ללקוח ולבעל המקצוע
-    guest_client_id = Column(String, ForeignKey("guest_clients.id"), nullable=False)
+    guest_client_id = Column(String, ForeignKey("guest_clients.id"), nullable=True) # שונה ל-True כי הזמנה יכולה להיות של לקוח קבוע
+    regular_client_id = Column(String, ForeignKey("regular_clients.id"), nullable=True) # 🔥 שורה חדשה!
     provider_id = Column(String, ForeignKey("providers.id"), nullable=True)
     
     status = Column(Enum(BookingStatus), default=BookingStatus.PENDING_PAYMENT)
@@ -87,6 +88,7 @@ class Booking(Base):
     
     # קשרים דו-כיווניים של פייתון לניווט קל בין הישויות בקוד
     guest_client = relationship("GuestClient", back_populates="bookings")
+    regular_client = relationship("RegularClient", back_populates="bookings") # 🔥 שורה חדשה!
     provider = relationship("Provider", back_populates="bookings")
     messages = relationship("ChatMessage", back_populates="booking")
 
