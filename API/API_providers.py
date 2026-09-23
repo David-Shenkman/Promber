@@ -29,7 +29,9 @@ def create_provider(provider_data: ProviderCreateSchema, db: Session = Depends(g
     new_provider = Provider(
         phone=provider_data.phone,
         first_name=provider_data.first_name,
-        last_name=provider_data.last_name
+        last_name=provider_data.last_name, 
+        proffesion=provider_data.profession,
+        is_avaliable=provider_data.is_available
     )
     # שמירה בבסיס הנתונים
     db.add(new_provider)
@@ -68,3 +70,4 @@ def delete_provider(provider_id: str, db: Session = Depends(get_db)):
     db.delete(provider)
     db.commit()
     return {"detail": "Provider deleted successfully"}
+#dfggsdf
