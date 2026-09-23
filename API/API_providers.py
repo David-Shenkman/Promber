@@ -17,6 +17,8 @@ class ProviderCreateSchema(BaseModel):
     phone: str
     first_name: str
     last_name: str
+    proffesion: str 
+    is_avaliable: bool
 
     class Config:
         from_attributes = True
